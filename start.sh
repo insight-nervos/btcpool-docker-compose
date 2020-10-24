@@ -9,3 +9,6 @@ sudo docker build -t btccom/btcpool-btc -f ./btcpool/docker/btcpool/deploy/Docke
 
 # move configs
 cp ./btcpool/src/bitcoin/cfg/* ./volumes/btcpool/
+
+# start docker compose
+sudo docker-compose up
