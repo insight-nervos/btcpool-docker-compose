@@ -2,24 +2,29 @@ version: "3.3"
 services:
   btcpool:
     image: "btccom/btcpool-btc:latest"
+    ports:
+      - "3333:3333" # sserver
+      - "8080:8080" # statshttpd
+      - "8081:8081" # slparserhttpd
     depends_on:
       - zookeeper
       - kafka
     volumes:
       - "./volumes/btcpool/:/work/config"
     command: ["sserver", "-c", "/work/config/sserver.cfg"]
-    environment:
-      ZOOKEEPER_LOCATION: "zookeeper"
-      KAFKA_LOCATION: "kafka"
     networks:
       - default
 
-# TODO:
-#    - Logging file location
-#    - Proper ports expose
-#    expose:
-#   networks:
-#     - default
+  ckb_node:
+    image: "nervos/ckb"
+    ports: 
+      - "8114:8114"
+      - "8115:8115"
+    environment:
+      CKB_CHAIN: "mainnet"
+    volumes:
+      - "./volumes/ckb/:/var/lib/ckb/"
+    command: ["run"]
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.1
@@ -52,33 +57,15 @@ services:
   user_list:
     build: ./user_list
     ports:
-      - "127.0.0.1:8000:8000"
+      - "8000:8000"
     networks:
       - default
+    restart: always
 
-#  control-center:
-#    image: confluentinc/cp-enterprise-control-center:5.5.1
-#    hostname: control-center
-#    container_name: control-center
-#    depends_on:
-#      - zookeeper
-#      - kafka
-#      - schema-registry
-#    ports:
-#      - "127.0.0.1:9021:9021"
-#    environment:
-#      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:19092'
-#      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-#      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-#      CONTROL_CENTER_REPLICATION_FACTOR: 1
-#      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
-#      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-#      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
-#      PORT: 9021
-#    networks:
-#      - default
   mysql:
     image: mariadb
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
     command: --log-error=/var/log/mysql/mysql.log
