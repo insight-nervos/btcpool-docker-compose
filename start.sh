@@ -1,5 +1,5 @@
 # clone repo
-git clone https://github.com/btccom/btcpool.git
+git clone https://github.com/insight-stratum/btcpool.git
 
 # build base image
 sudo docker build -t btccom/btcpool_build:btc-0.16.3 -f ./btcpool/docker/btcpool/base-image/Dockerfile.btc --build-arg BUILD_JOBS=$(nproc) ./btcpool/docker/btcpool/base-image/
