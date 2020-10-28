@@ -11,6 +11,7 @@ services:
       - kafka
     volumes:
       - "./volumes/btcpool/:/work/config"
+    restart: always
     command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
