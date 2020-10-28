@@ -1,5 +1,5 @@
 # move configs
-cp ./config/btcpool/* ./volumes/btcpool/
+cp ./config/pool/* ./volumes/btcpool/
 
 # start docker compose
 sudo docker-compose up
