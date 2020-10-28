@@ -70,9 +70,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
     command: --log-error=/var/log/mysql/mysql.log
     volumes:
-      - ./data/mysql/data:/var/lib/mysql
-      - ./data/mysql/sql:/docker-entrypoint-initdb.d
-      - ./data/mysql/log:/var/log/mysql
+      - ./volumes/mysql/data:/var/lib/mysql
+      - ./volumes/mysql/sql:/docker-entrypoint-initdb.d
+      - ./volumes/mysql/log:/var/log/mysql
     restart: always
 
   redis:
