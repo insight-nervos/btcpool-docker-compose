@@ -3,7 +3,7 @@ services:
   btcpool:
     image: "btccom/btcpool-btc:latest"
     ports:
-      - "3333:3333" # sserver
+      - "1800:1800" # sserver
       - "8080:8080" # statshttpd
       - "8081:8081" # slparserhttpd
     depends_on:
