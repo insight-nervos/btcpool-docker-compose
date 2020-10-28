@@ -54,8 +54,8 @@ services:
     networks:
       - default
 
-  user_list:
-    build: ./user_list
+  user-list:
+    build: ./user-list
     ports:
       - "8000:8000"
     networks:
