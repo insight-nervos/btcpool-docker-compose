@@ -10,13 +10,13 @@ services:
       - zookeeper
       - kafka
     volumes:
-      - "./volumes/btcpool/:/work/config"
+      - "./btcpool/config:/work/config"
     restart: always
     command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
 
-  ckb_node:
+  ckb-node:
     image: "nervos/ckb"
     ports: 
       - "8114:8114"
@@ -24,7 +24,7 @@ services:
     environment:
       CKB_CHAIN: "mainnet"
     volumes:
-      - "./volumes/ckb/:/var/lib/ckb/"
+      - "./ckb-node/data:/var/lib/ckb"
     command: ["run"]
 
   zookeeper:
@@ -37,6 +37,8 @@ services:
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
       - default
+    logging:
+      driver: none
 
   kafka:
     image: confluentinc/cp-kafka:5.5.1
@@ -54,6 +56,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - default
+    logging:
+      driver: none
 
   user-list:
     build: ./user-list
@@ -71,19 +75,44 @@ services:
       MYSQL_ROOT_PASSWORD: root
     command: --log-error=/var/log/mysql/mysql.log
     volumes:
-      - ./volumes/mysql/data:/var/lib/mysql
-      - ./volumes/mysql/sql:/docker-entrypoint-initdb.d
-      - ./volumes/mysql/log:/var/log/mysql
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/sql:/docker-entrypoint-initdb.d
+      - ./mysql/log:/var/log/mysql
     restart: always
+    logging:
+      driver: none
 
+  # only run redis if enabled in btcpool
   redis:
     image: redis:latest
     ports:
       - "127.0.0.1:6379:6379"
     volumes:
-      - $HOME/redis/data/db:/data/db
+      - ./redis/data/db:/data/db
     networks:
       - default
+    logging:
+      driver: none
+
+  prometheus:
+    image: prom/prometheus:v2.22.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    networks:
+      - default
+    labels:
+      org.label-schema.group: "monitoring"
 
 #  proxy:
 #    image: traefik:v2.2
