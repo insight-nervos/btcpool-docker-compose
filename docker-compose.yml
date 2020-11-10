@@ -19,8 +19,8 @@ services:
   ckb-node:
     image: "nervos/ckb"
     ports: 
-      - "8114:8114"
-      - "8115:8115"
+      - "8114:8114" # RPC
+      - "8115:8115" # Blockchain
     environment:
       CKB_CHAIN: "mainnet"
     volumes:
@@ -62,7 +62,7 @@ services:
   user-list:
     build: ./user-list
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     networks:
       - default
     restart: always
