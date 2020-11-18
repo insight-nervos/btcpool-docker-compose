@@ -1,9 +1,7 @@
 version: "3.3"
 services:
   btcpool:
-    image: btccom/btcpool:2019.09.26-17-support-ckb-mining_btc-0.16.3
-    #    build:
-#      context: ./btcpool/build/docker/btcpool/base-image/Dockerfile.btc
+    image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
     ports:
       - "1800:1800" # sserver
       - "8080:8080" # statshttpd
@@ -14,7 +12,7 @@ services:
     volumes:
       - "./btcpool/config:/work/config"
     restart: always
-#    command: ["sserver", "-c", "/work/config/sserver.cfg"]
+    command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
 
@@ -26,7 +24,7 @@ services:
     environment:
       CKB_CHAIN: "mainnet"
     volumes:
-      - "./ckb-node/data:/var/lib/ckb"
+      - "./ckb-node:/var/lib/ckb"
     command: ["run"]
 
   zookeeper:
