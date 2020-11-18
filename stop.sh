@@ -1,1 +1,2 @@
-sudo docker-compose down
+#!/usr/bin/env bash
+docker-compose down
