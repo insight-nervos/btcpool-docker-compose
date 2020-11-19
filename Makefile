@@ -8,10 +8,10 @@ build:
 	./scripts/build-images.sh
 
 start:
-	docker-compose up -d
+	./scripts/compose.sh start
 
 stop:
-	docker-compose down
+	./scripts/compose.sh stop
 
 test:								## Run tests
 	go test ./test -v -timeout 45m
