@@ -1,0 +1,9 @@
+.idea/
+
+btcpool/build
+
+ckb-node/*
+!ckb-node/.gitkeep
+
+mysql/*
+!mysql/sql/*
