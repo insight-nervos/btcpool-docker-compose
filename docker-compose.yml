@@ -73,6 +73,8 @@ services:
     build: ./user-list
     ports:
       - "127.0.0.1:8000:8000"
+    environment:
+      MINER_LIST_FILE_PATH: "/go/src/user_list/config/miners.json"
     networks:
       - default
     restart: always
