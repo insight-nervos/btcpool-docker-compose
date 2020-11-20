@@ -1,14 +1,5 @@
 version: "3.3"
 
-volumes:
-  app-db-data: {}
-  prometheus_data: {}
-  grafana_data: {}
-
-networks:
-  monitor-net:
-    driver: bridge
-
 services:
   btcpool:
     image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
@@ -16,6 +7,9 @@ services:
       - "1800:1800" # sserver
       - "8080:8080" # statshttpd
       - "8081:8081" # slparserhttpd
+      - "9101:9101"
+#    expose:
+#      - 9101
     depends_on:
       - zookeeper
       - kafka
@@ -26,6 +20,7 @@ services:
     command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
+      - monitor-net
 
   ckb-node:
     image: "nervos/ckb"
@@ -75,12 +70,14 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     environment:
-      MINER_LIST_CSV: ${MINER_LIST_CSV}
+      MINER_LIST_FILE_PATH: "${MINER_LIST_FILE_PATH}"
     networks:
       - default
     restart: always
     depends_on:
       - mysql
+    volumes:
+      - ${MINER_LIST_FILE_PATH}:/root/config/miners.json
 
   mysql:
     image: mariadb

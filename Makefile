@@ -13,6 +13,9 @@ start:
 stop:
 	./scripts/compose.sh stop
 
+ps:
+	./scripts/compose.sh ps
+
 test:								## Run tests
 	go test ./test -v -timeout 45m
 

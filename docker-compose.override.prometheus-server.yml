@@ -1,7 +1,6 @@
 version: "3.3"
 
 volumes:
-  app-db-data: {}
   prometheus_data: {}
   grafana_data: {}
 
@@ -10,6 +9,19 @@ networks:
     driver: bridge
 
 services:
+  btcpool:
+    expose:
+      - 9101
+    networks:
+      - default
+      - monitor-net
+  kafka:
+    expose:
+      - 9101
+    networks:
+      - default
+      - monitor-net
+
   prometheus:
     image: prom/prometheus:v2.22.0
     container_name: prometheus
@@ -26,7 +38,7 @@ services:
     expose:
       - 9090
     networks:
-      - default
+      - monitor-net
     labels:
       org.label-schema.group: "monitoring"
 
@@ -64,4 +76,68 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
+  caddy:
+    image: stefanprodan/caddy
+    container_name: caddy
+    ports:
+      - "3000:3000"
+      - "9090:9090"
+      - "9093:9093"
+    volumes:
+      - ./caddy:/etc/caddy
+    environment:
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
+  kafkaexporter:
+    image: danielqsj/kafka-exporter
+    expose:
+      - 9308
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+    command: ["--kafka.server=kafka:9092"]
+
+  nodeexporter:
+    image: prom/node-exporter:v1.0.1
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    expose:
+      - 9100
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.37.0
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      #- /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
+    restart: unless-stopped
+    expose:
+      - 8080
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"

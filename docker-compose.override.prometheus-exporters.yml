@@ -1,21 +1,20 @@
 version: "3.3"
 
-volumes:
-  app-db-data: {}
-  prometheus_data: {}
-  grafana_data: {}
-
 networks:
   monitor-net:
     driver: bridge
 
 services:
+  btcpool:
+    ports:
+      - "9101:9101"
+    networks:
+      - default
+
   kafka-exporter:
     image: danielqsj/kafka-exporter
-    expose:
-      - 9308
-    networks:
-      - monitor-net
+    ports:
+      - "9308:9308"
     labels:
       org.label-schema.group: "monitoring"
     command: ["--kafka.server=kafka:9092"]
@@ -33,10 +32,8 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
     restart: unless-stopped
-    expose:
-      - 9100
-    networks:
-      - monitor-net
+    ports:
+      - "9100:9100"
     labels:
       org.label-schema.group: "monitoring"
 
@@ -50,9 +47,7 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
       #- /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
     restart: unless-stopped
-    expose:
-      - 8080
-    networks:
-      - monitor-net
+    ports:
+      - "8080:8080"
     labels:
       org.label-schema.group: "monitoring"

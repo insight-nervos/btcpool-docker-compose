@@ -13,6 +13,16 @@ rule_files:
 
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
+  - job_name: 'btcpoolexporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['btcpool:9101']
+
+  - job_name: 'kafkaexporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['kafkaexporter:9308']
+
   - job_name: 'nodeexporter'
     scrape_interval: 5s
     static_configs:
@@ -27,13 +37,6 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets: ['localhost:9090']
-
-  - job_name: 'pushgateway'
-    scrape_interval: 10s
-    honor_labels: true
-    static_configs:
-      - targets: ['pushgateway:9091']
-
 
 alerting:
   alertmanagers:

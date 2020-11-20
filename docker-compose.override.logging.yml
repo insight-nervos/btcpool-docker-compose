@@ -10,5 +10,3 @@ services:
       dockerfile: Dockerfile
       args:
         INSTALL_DEV: ${INSTALL_DEV-false}
-    networks:
-      - default
