@@ -1,14 +1,33 @@
 package main
 
 import (
-    "strconv"
-    "net/http"
-    "encoding/json"
+  "strconv"
+  "net/http"
+  "encoding/json"
+  "os"
+  "io/ioutil"
+  "encoding/json"
 )
 
+var miners map[string]int
+
 func main() {
-    http.HandleFunc("/userlist.php", GetUserList)
-    http.ListenAndServe(":8000", nil)
+
+  // read json file for default miners 
+  miner_json_path := "./config/miners.json"
+
+  miner_json, err := os.Open(miner_json_path)
+  if err != nil {
+    panic(err)
+  }
+  defer miner_json.Close()
+
+  json_bytes, _ := ioutil.ReadAll(miner_json)
+  json.Unmarshal(json_bytes, &miners)
+
+  // http server
+  http.HandleFunc("/userlist.php", GetUserList)
+  http.ListenAndServe(":8000", nil)
 }
 
 func GetUserList(w http.ResponseWriter, r *http.Request) {
@@ -21,19 +40,10 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
     last_id, _ = strconv.Atoi(last_id_str[0])
   }
 
-  users := map[string]int{
-    "aaa": 1,
-    "bbb": 2,
-    "xxx": 3,
-    "mmm": 4,
-    "vvv": 5,
-    "ddd": 6,
-  }
-
-  requested_users := map[string]int{}
-  for user, id := range users {
+  requested_miners := map[string]int{}
+  for miner, id := range miners {
     if (id > last_id) {
-      requested_users[user] = id
+      requested_miners[miner] = id
     }
   }
 
@@ -41,7 +51,7 @@ func GetUserList(w http.ResponseWriter, r *http.Request) {
 
   resp["err_no"] = 0
   resp["err_msg"] = nil
-  resp["data"] = requested_users
+  resp["data"] = requested_miners
 
   resp_json, _ := json.Marshal(resp)
   w.Write(resp_json)
