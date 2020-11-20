@@ -19,6 +19,7 @@ services:
     depends_on:
       - zookeeper
       - kafka
+      - miner-list
     volumes:
       - "./btcpool/config:/work/config"
     restart: always
@@ -69,13 +70,17 @@ services:
     logging:
       driver: none
 
-  user-list:
-    build: ./user-list
+  miner-list:
+    build: ./miner-list
     ports:
       - "127.0.0.1:8000:8000"
+    environment:
+      MINER_LIST_CSV: ${MINER_LIST_CSV}
     networks:
       - default
     restart: always
+    depends_on:
+      - mysql
 
   mysql:
     image: mariadb
