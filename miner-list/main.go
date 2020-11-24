@@ -30,11 +30,11 @@ func main() {
   json.Unmarshal(json_bytes, &miners)
 
   // http server
-  http.HandleFunc("/userlist.php", GetUserList)
+  http.HandleFunc("/miner_list", GetMinerList)
   http.ListenAndServe(":8000", nil)
 }
 
-func GetUserList(w http.ResponseWriter, r *http.Request) {
+func GetMinerList(w http.ResponseWriter, r *http.Request) {
   last_id_str, _ := r.URL.Query()["last_id"]
 
   var last_id int
