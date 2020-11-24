@@ -15,11 +15,6 @@ func main() {
   // read json file for default miners 
   miner_json_path := "./config/miners.json"
 
-  miner_env := os.Getenv("MINER_LIST_FILE_PATH")
-  if miner_env != "" {
-    miner_json_path = miner_env
-  }
-
   miner_json, err := os.Open(miner_json_path)
   if err != nil {
     panic(err)
