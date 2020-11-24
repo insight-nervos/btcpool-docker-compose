@@ -20,13 +20,14 @@ services:
     command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
-      - monitor-net
 
   ckb-node:
     image: "nervos/ckb"
     ports: 
       - "8114:8114" # RPC
       - "8115:8115" # Blockchain
+    networks:
+      - default
     environment:
       CKB_CHAIN: "mainnet"
     volumes:
