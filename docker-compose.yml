@@ -22,7 +22,7 @@ services:
       - default
 
   ckb-node:
-    image: "nervos/ckb"
+    image: nervos/ckb:v0.38.0
     ports: 
       - "8114:8114" # RPC
       - "8115:8115" # Blockchain
@@ -33,6 +33,25 @@ services:
     volumes:
       - "./ckb-node:/var/lib/ckb"
     command: ["run"]
+
+  nodebridge:
+    build: ./nodebridge
+    networks:
+      - default
+    environment:
+      MYSQL: "mysql:3306"
+      KAFKA: "kafka:9092"
+      CKBNODE: "ckb-node"
+    restart: always
+    links:
+      - "mysql"
+      - "kafka"
+      - "ckb-node"
+    depends_on:
+      - kafka
+      - mysql
+      - btcpool
+      - ckb-node
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.1
@@ -70,15 +89,11 @@ services:
     build: ./miner-list
     ports:
       - "127.0.0.1:8000:8000"
-    environment:
-      MINER_LIST_FILE_PATH: "${MINER_LIST_FILE_PATH}"
     networks:
       - default
     restart: always
     depends_on:
       - mysql
-    volumes:
-      - ${MINER_LIST_FILE_PATH}:/root/config/miners.json
 
   mysql:
     image: mariadb
