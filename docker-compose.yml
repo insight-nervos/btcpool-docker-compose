@@ -8,8 +8,6 @@ services:
       - "8080:8080" # statshttpd
       - "8081:8081" # slparserhttpd
       - "9101:9101"
-#    expose:
-#      - 9101
     depends_on:
       - zookeeper
       - kafka
