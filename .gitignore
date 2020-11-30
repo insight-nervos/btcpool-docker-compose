@@ -4,6 +4,7 @@ btcpool/build
 
 ckb-node/*
 !ckb-node/.gitkeep
+!ckb-node/ckb.toml.example
 
 mysql/*
 !mysql/sql/*

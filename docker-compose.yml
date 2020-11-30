@@ -38,10 +38,6 @@ services:
     build: ./nodebridge
     networks:
       - default
-    environment:
-      MYSQL: "mysql:3306"
-      KAFKA: "kafka:9092"
-      CKBNODE: "ckb-node"
     restart: always
     links:
       - "mysql"
