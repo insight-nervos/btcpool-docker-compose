@@ -179,6 +179,6 @@ cellbase_cache_size        = 30
 # secp256k1_blake160_sighash_all example:
 [block_assembler]
 code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
-args = "0xbc6ec3d454b7f7e6b098f0bbdaf52bba0c9a1c6093ecb8d569d7de1976feb341"   # test addr
+args = "0x8d627decece439977a3a0a97815b63debaff2874"   # test addr
 hash_type = "type"
-message = "0xbc6ec3d454b7f7e6b098f0bbdaf52bba0c9a1c6093ecb8d569d7de1976feb341"
+message = "0x"

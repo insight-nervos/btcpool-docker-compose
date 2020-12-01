@@ -32,7 +32,7 @@ services:
       CKB_CHAIN: "mainnet"
     volumes:
       - "./ckb-node:/var/lib/ckb"
-    command: ["run", "---ba-advanced"]
+    command: ["run"]
 
   nodebridge:
     build: ./nodebridge
