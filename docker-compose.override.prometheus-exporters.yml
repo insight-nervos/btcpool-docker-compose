@@ -11,7 +11,7 @@ services:
     networks:
       - default
 
-  kafka-exporter:
+  kafkaexporter:
     image: danielqsj/kafka-exporter
     ports:
       - "9308:9308"
@@ -47,7 +47,9 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
       #- /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
     restart: unless-stopped
+    command:
+      - '-port=9080'
     ports:
-      - "8080:8080"
+      - "9080:9080"
     labels:
       org.label-schema.group: "monitoring"
