@@ -66,6 +66,7 @@ services:
       - zookeeper
     ports:
       - "127.0.0.1:9092:9092"
+      - "127.0.0.1:19092:19092"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: "kafka:9092"
       KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
@@ -124,8 +125,7 @@ services:
       - zookeeper
       - kafka
     ports:
-      - "127.0.0.1:9021:9021"
-#      - "9021:9021"
+      - "9021:9021"
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:19092'
       CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
