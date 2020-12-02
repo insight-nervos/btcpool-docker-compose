@@ -8,16 +8,17 @@ services:
   btcpool:
     ports:
       - "9101:9101"
-    networks:
-      - default
+
+  ckb-node:
+    ports:
+      - "8100:8100" # Metrics
 
   kafkaexporter:
     image: danielqsj/kafka-exporter
     ports:
       - "9308:9308"
-    labels:
-      org.label-schema.group: "monitoring"
-    command: ["--kafka.server=kafka:9092"]
+    restart: unless-stopped
+    command: ["--kafka.server=kafka:19092"]
 
   nodeexporter:
     image: prom/node-exporter:v1.0.1
@@ -34,8 +35,6 @@ services:
     restart: unless-stopped
     ports:
       - "9100:9100"
-    labels:
-      org.label-schema.group: "monitoring"
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.37.0
@@ -51,5 +50,3 @@ services:
       - '-port=9080'
     ports:
       - "9080:9080"
-    labels:
-      org.label-schema.group: "monitoring"
