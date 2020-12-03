@@ -11,7 +11,7 @@ services:
 
   ckb-node:
     ports:
-      - "8100:8100" # Metrics
+      - "127.0.0.1:8100:8100" # Metrics
 
   kafkaexporter:
     image: danielqsj/kafka-exporter
