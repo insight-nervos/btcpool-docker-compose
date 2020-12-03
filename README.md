@@ -84,3 +84,5 @@ Environment variables can be set or populated in the .env file.
 | :--- | :--- | :--- | 
 | DOCKER_IMAGE_BTCPOOL | btccom/btcpool | The btcpool docker image to use. |
 | TAG_BTCPOOL | 2019.09.26-17-support-ckb-mining_bch-0.18.5 | The docker tag to use for btcpool. |
+| DOCKER_IMAGE_CKB_NODE | nervos/ckb | The image for ckb | 
+| TAG_CKB_NODE | v0.38.1 | The image tag for ckb | 
