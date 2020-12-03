@@ -18,6 +18,11 @@ scrape_configs:
     static_configs:
       - targets: ['btcpool:9101']
 
+  - job_name: 'ckbnodeexporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ckb-node:8100']
+
   - job_name: 'kafkaexporter'
     scrape_interval: 5s
     static_configs:

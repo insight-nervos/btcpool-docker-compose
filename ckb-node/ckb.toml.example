@@ -182,3 +182,24 @@ code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
 args = "0x8d627decece439977a3a0a97815b63debaff2874"   # test addr
 hash_type = "type"
 message = "0x"
+
+
+# All metrics derived from https://github.com/nervosnetwork/ckb/pull/2199
+# See https://github.com/nervosnetwork/ckb/blob/develop/util/metrics-config/src/lib.rs#L13
+[metrics]
+threads = 3
+histogram_window = 60
+histogram_granularity = 1
+upkeep_interval = 500
+
+[metrics.exporter.prometheus]
+target = { type = "http", listen_address = "127.0.0.1:8100" }
+format = { type = "prometheus" }
+
+# [metrics.exporter.log_yaml]
+# target = { type = "log", level = "warn", interval = 600 }
+# format = { type = "yaml" }
+#
+# [metrics.exporter.log_json]
+# target = { type = "log", level = "error", interval = 900 }
+# format = { type = "json" }

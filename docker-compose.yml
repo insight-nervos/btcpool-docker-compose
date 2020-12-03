@@ -20,7 +20,7 @@ services:
       - default
 
   ckb-node:
-    image: nervos/ckb:v0.38.0
+    image: ${DOCKER_IMAGE_CKB_NODE}:${TAG_CKB_NODE}
     ports: 
       - "8114:8114" # RPC
       - "8115:8115" # Blockchain

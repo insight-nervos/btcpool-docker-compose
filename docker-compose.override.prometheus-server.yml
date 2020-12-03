@@ -22,6 +22,10 @@ services:
       - default
       - monitor-net
 
+  ckb-node:
+    expose:
+      - 8100
+
   prometheus:
     image: prom/prometheus:v2.22.0
     container_name: prometheus
@@ -97,11 +101,17 @@ services:
   kafkaexporter:
     expose:
       - 9308
+    networks:
+      - monitor-net
 
   nodeexporter:
     expose:
       - 9100
+    networks:
+      - monitor-net
 
   cadvisor:
     expose:
       - 9080
+    networks:
+      - monitor-net
