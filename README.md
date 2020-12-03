@@ -6,12 +6,12 @@ ansible and / or terraform with it's associated roles.
 
 ## Quick Start
 
-Install docker and docker-compose. 
+Install [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/). 
 
 ```bash
-make start 
-make ps  # Lists the containers 
-make stop # To bring down the pool 
+make start  # Bring up the pool
+make ps     # List container status
+make stop   # Bring down the pool 
 ```
 
 To run alternative configurations, prefix with the stack. 
