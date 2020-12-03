@@ -2,7 +2,23 @@
 
 This is a docker-compose stack to setup a Stratum V1 mining pool for Nervos Blockchain.  It sets up the required
 infrastructure along with several utilities such as prometheus for operations. It can be deployed independently or via
-ansible and / or terraform with it's associated roles. This 
+ansible and / or terraform with it's associated roles. 
+
+## Quick Start
+
+Install docker and docker-compose. 
+
+```bash
+make start 
+make ps  # Lists the containers 
+make stop # To bring down the pool 
+```
+
+To run alternative configurations, prefix with the stack. 
+
+```bash
+STACK=prometheus make start 
+```
 
 ### Configurations 
 
@@ -16,6 +32,16 @@ configuration reference the table below.
 | Base | `make start` | Minimal deployment | 
 | Prometheus Server | `STACK=prometheus make start` | Deploy with prometheus, grafana, and exporters | 
 | Prometheus Exporters | `STACK=exporters make start` | Deploy with prometheus exporters. To be used with external prometheus server. | 
+
+##### miner-list
+
+BTCPool requires users to name each individual mining unit. Create a JSON file with the path `./miner-list/config/miners.json` and add miner names here. Use these names to connect miners to BTCPool.
+```
+{
+  "alice_miner": 0,
+  "bob_miner": 1
+}
+```
 
 ### Containers
 
@@ -39,25 +65,6 @@ The following containers are run with this application.
 | nodeexporter | Exporters | Node data exporter | 
 | cadvisor | Exporters | Container data exporter | 
 
-##### miner-list
-
-[]
-
-### Usage 
-
-Install docker and docker-compose. 
-
-```bash
-make start 
-make ps  # Lists the containers 
-make stop # To bring down the pool 
-```
-
-To run alternative configurations, prefix with the stack. 
-
-```bash
-STACK=prometheus make start 
-```
 
 ### Related Repositories 
 
