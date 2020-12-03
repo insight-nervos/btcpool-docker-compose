@@ -33,7 +33,7 @@ configuration reference the table below.
 | Prometheus Server | `STACK=prometheus make start` | Deploy with prometheus, grafana, and exporters | 
 | Prometheus Exporters | `STACK=exporters make start` | Deploy with prometheus exporters. To be used with external prometheus server. | 
 
-##### miner-list
+### Miners
 
 BTCPool requires users to name each individual mining unit. Create a JSON file with the path `./miner-list/config/miners.json` and add miner names here. Use these names to connect miners to BTCPool.
 ```
@@ -54,7 +54,7 @@ The following containers are run with this application.
 | nodebridge | Base | Connects btcpool with Nervos | 
 | kafka | Base | Required for running btcpool | 
 | zookeeper | Base | For running kafka | 
-| miner-list | Base | Small service to connect miners to pool - [more info](#miner-list) 
+| miner-list | Base | Service to provide miner authentication |
 | mysql | Base | For btcpool management data | 
 | redis | Base | For caching btcpool data | 
 | prometheus | Prometheus | Prometheus server | 
