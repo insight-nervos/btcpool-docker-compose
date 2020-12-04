@@ -43,6 +43,16 @@ BTCPool requires users to name each individual mining unit. Create a JSON file w
 }
 ```
 
+### Initializing CKB 
+
+To initialize ckb, you will need to initialize the config files for ckb. They can be modified by either, 
+
+1. Starting the stack, editing the `ckb-node/ckb.toml` 
+1. Running ```docker run -v `pwd`/ckb-node:/var/lib/ckb nervos/ckb init --chain mainnet``` before deploying the stack
+ and edit the files as needed. 
+
+For more information, consult the docs [here](https://github.com/nervosnetwork/ckb/blob/develop/docs/configure.md). 
+
 ### Containers
 
 The following containers are run with this application. 
