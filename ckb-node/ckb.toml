@@ -192,7 +192,7 @@ histogram_granularity = 1
 upkeep_interval = 500
 
 [metrics.exporter.prometheus]
-target = { type = "http", listen_address = "127.0.0.1:8100" }
+target = { type = "http", listen_address = "0.0.0.0:8100" }
 format = { type = "prometheus" }
 
 [metrics.exporter.log_yaml]
