@@ -24,7 +24,7 @@ services:
     ports: 
       - "8114:8114" # RPC
       - "8115:8115" # Blockchain
-#      - "127.0.0.1:8100:8100"
+      - "8100:8100" # Metrics
     networks:
       - default
     environment:
