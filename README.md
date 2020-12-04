@@ -38,6 +38,7 @@ configuration reference the table below.
 BTCPool requires users to name each individual mining unit. Create a JSON file with the path `./miner-list/config/miners.json` and add miner names here. Use these names to connect miners to BTCPool.
 ```
 {
+# "miner_name": "unique_id",
   "alice_miner": 0,
   "bob_miner": 1
 }
@@ -52,6 +53,18 @@ To initialize ckb, you will need to initialize the config files for ckb. They ca
  and edit the files as needed. 
 
 For more information, consult the docs [here](https://github.com/nervosnetwork/ckb/blob/develop/docs/configure.md). 
+=======
+### Pool Wallet
+
+BTCpool requires users to import pool's wallet address. To import your wallet edit `./ckb-node/ckb.toml`, scroll to
+the `[block_assembler]` section, and change the `[args]` parameter to your pool's wallet address.
+```
+[block_assembler]
+code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
+args = "0xYOUR_POOL_WALLET_HERE"   # test addr
+hash_type = "type"
+message = "0x"
+```
 
 ### Containers
 
@@ -75,6 +88,15 @@ The following containers are run with this application.
 | nodeexporter | Exporters | Node data exporter | 
 | cadvisor | Exporters | Container data exporter | 
 
+##### miner-list
+The miner-list service is required by BTCpool to provide miner names and IDs. The service simply responds with a json
+object with all the users (or requested IDs) on the '/miner-list' endpoint. See this 
+[issue](https://github.com/btccom/btcpool/issues/16#issuecomment-278245381) for more information.
+
+##### nodebridge
+The nodebridge service is required by BTCpool to retrieve mining jobs from ckb-node and send them to Kafka under the
+CkbRawGw topic. This replaces blkmaker and gwmaker required by btcpool for other blockchains. See this 
+[issue](https://github.com/btccom/btcpool/issues/378) for more information.
 
 ### Related Repositories 
 
