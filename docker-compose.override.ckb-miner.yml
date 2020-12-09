@@ -3,7 +3,7 @@ version: "3.3"
 services:
   ckb-miner:
     build: ./ckb-miner
-    command: /bin/bash -c "sleep 5; ./main --url btcpool:1800 --username alice --password X"
+    command: /bin/bash -c "sleep 20; ./main --url btcpool:1800 --username alice --password X"
     depends_on:
       - ckb-node
       - btcpool

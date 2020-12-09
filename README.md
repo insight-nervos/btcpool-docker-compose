@@ -48,16 +48,17 @@ BTCPool requires users to name each individual mining unit. Create a JSON file w
 
 To initialize ckb, you will need to initialize the config files for ckb. They can be modified by either, 
 
-1. Starting the stack, editing the `ckb-node/ckb.toml` 
+1. Starting the stack, editing the `ckb-node/ckb.toml`, then restarting the container. 
 1. Running ```docker run -v `pwd`/ckb-node:/var/lib/ckb nervos/ckb init --chain mainnet``` before deploying the stack
  and edit the files as needed. 
 
 For more information, consult the docs [here](https://github.com/nervosnetwork/ckb/blob/develop/docs/configure.md). 
-=======
+
 ### Pool Wallet
 
-BTCpool requires users to import pool's wallet address. To import your wallet edit `./ckb-node/ckb.toml`, scroll to
-the `[block_assembler]` section, and change the `[args]` parameter to your pool's wallet address.
+BTCpool requires users to import pool's wallet address. The wallet address can be off an online wallet or a ledger
+ (preferred).  To import your wallet edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
+  change the `[args]` parameter to your pool's wallet address.
 ```
 [block_assembler]
 code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
@@ -88,15 +89,73 @@ The following containers are run with this application.
 | nodeexporter | Exporters | Node data exporter | 
 | cadvisor | Exporters | Container data exporter | 
 
-##### miner-list
+##### Miner Initialization 
+
 The miner-list service is required by BTCpool to provide miner names and IDs. The service simply responds with a json
 object with all the users (or requested IDs) on the '/miner-list' endpoint. See this 
 [issue](https://github.com/btccom/btcpool/issues/16#issuecomment-278245381) for more information.
 
-##### nodebridge
+##### Node Bridge
+
 The nodebridge service is required by BTCpool to retrieve mining jobs from ckb-node and send them to Kafka under the
 CkbRawGw topic. This replaces blkmaker and gwmaker required by btcpool for other blockchains. See this 
 [issue](https://github.com/btccom/btcpool/issues/378) for more information.
+
+##### Local Miner 
+
+> Note: This is not quite working as it is related to [#471](https://github.com/btccom/btcpool/issues/471) with the
+> miner not able to communicate with the pool properly. 
+
+For testing purposes, we have included a local cpu miner that joins the pool with the default credentials (username
+=`alice`).  To run this container:
+
+```shell script
+docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml up -d
+```
+
+The miner will wait 20 seconds to start to allow for the pool to initialize. 
+
+```shell script
+docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml logs ckb-miner 
+# These logs show the miner authing to the pool but don't receive a job 
+docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml logs btcpool 
+# On the pool side, we see the errors shown below.
+```
+
+```shell script
+btcpool_1         | I1209 00:55:36.412292     1 StratumSession.cc:248] authorize success, userId: 1, wokerHashId: 8113131267054106046, workerName: alice.__default__, password: X, clientAgent: ckbminer-v1.0.0, clientIp: 172.22.0.10, chain: default
+btcpool_1         | W1209 00:55:36.412325     1 StratumServer.cc:185] getLatestStratumJobEx fail
+btcpool_1         | E1209 00:55:36.412328     1 StratumSessionCkb.cc:62] sendMiningNotify failed, state = 3
+```
+
+To bring down the containers 
+```shell script
+docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml stop
+```
+
+### Prometheus 
+
+> Note: Grafana dashboards waiting for miner metrics before being finalization per 
+>[#471](https://github.com/btccom/btcpool/issues/471) mentioned above. 
+
+A full prometheus stack can be deployed alongside the pool including Grafana, Alertmanager, and the following
+ exporters. 
+
+| Exporter | Port | Description | 
+| :--- | :--- | :--- | 
+| btcpool | 9101 | | 
+| ckb-node | 8100 |  | 
+| kafkaexporter | 9308 |  | 
+| nodeexporter | 9100 |  | 
+| cadvisor | 9080 |  | 
+
+##### Grafana
+
+TODO
+
+##### Alertmanager 
+
+TODO
 
 ### Related Repositories 
 
