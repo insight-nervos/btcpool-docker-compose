@@ -15,6 +15,7 @@ services:
     networks:
       - default
       - monitor-net
+
   kafka:
     expose:
       - 9101

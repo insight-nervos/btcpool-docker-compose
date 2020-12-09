@@ -7,7 +7,6 @@ services:
       - "1800:1800" # sserver
       - "8080:8080" # statshttpd
       - "8081:8081" # slparserhttpd
-      - "9101:9101"
     depends_on:
       - zookeeper
       - kafka
@@ -24,7 +23,6 @@ services:
     ports: 
       - "8114:8114" # RPC
       - "8115:8115" # Blockchain
-      - "8100:8100" # Metrics
     networks:
       - default
     environment:
