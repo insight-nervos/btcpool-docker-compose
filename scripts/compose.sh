@@ -20,6 +20,11 @@ elif [ "${STACK}" = "exporters" ]; then
     -f docker-compose.yml \
     -f docker-compose.override.prometheus-exporters.yml \
     $DOCKER_CMD
+elif [ "${STACK}" = "miner" ]; then
+  docker-compose \
+    -f docker-compose.yml \
+    -f docker-compose.override.ckb-miner.yml \
+    $DOCKER_CMD
 else
   docker-compose $DOCKER_CMD
 fi

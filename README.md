@@ -32,6 +32,7 @@ configuration reference the table below.
 | Base | `make start` | Minimal deployment | 
 | Prometheus Server | `STACK=prometheus make start` | Deploy with prometheus, grafana, and exporters | 
 | Prometheus Exporters | `STACK=exporters make start` | Deploy with prometheus exporters. To be used with external prometheus server. | 
+| Local Miner | `STACK=miner make start` | Deploy with a single local miner for testing | 
 
 ### Miners
 
@@ -66,28 +67,6 @@ args = "0xYOUR_POOL_WALLET_HERE"   # test addr
 hash_type = "type"
 message = "0x"
 ```
-
-### Containers
-
-The following containers are run with this application. 
-
-| Container | Stack | Description | 
-| :--- | :--- | :--- | 
-| btcpool | Base | Main btcpool node | 
-| ckb-node | Base | Main Nervos runtime | 
-| nodebridge | Base | Connects btcpool with Nervos | 
-| kafka | Base | Required for running btcpool | 
-| zookeeper | Base | For running kafka | 
-| miner-list | Base | Service to provide miner authentication |
-| mysql | Base | For btcpool management data | 
-| redis | Base | For caching btcpool data | 
-| prometheus | Prometheus | Prometheus server | 
-| alertmanager | Prometheus | Send alerts from prometheus | 
-| grafana | Prometheus | Visualize metrics from pool | 
-| caddy | Prometheus | Reverse proxy for prometheus and grafana | 
-| kafka-exporter | Exporters | Kafka exporter | 
-| nodeexporter | Exporters | Node data exporter | 
-| cadvisor | Exporters | Container data exporter | 
 
 ##### Miner Initialization 
 
@@ -157,15 +136,27 @@ TODO
 
 TODO
 
-### Related Repositories 
+### Containers
 
-| Repo | Description | 
-| :--- | :--- |
-| [ansible-role-btcpool](https://github.com/insight-stratum/ansible-role-btcpool) | Ansible role that wraps this repository | 
-| [terraform-btcpool-aws-node](https://github.com/insight-stratum/terraform-btcpool-aws-node) | Terraform module that sets up node on AWS with Ansible role |
-| [terraform-btcpool-alibaba-node](https://github.com/insight-stratum/terraform-btcpool-alibaba-node) | Terraform module that sets up node on Alibaba with Ansible role |
-| [btcpool](https://github.com/btccom/btcpool) | Main btcpool repo |
+The following containers are run with this application. 
 
+| Container | Stack | Description | 
+| :--- | :--- | :--- | 
+| btcpool | Base | Main btcpool node | 
+| ckb-node | Base | Main Nervos runtime | 
+| nodebridge | Base | Connects btcpool with Nervos | 
+| kafka | Base | Required for running btcpool | 
+| zookeeper | Base | For running kafka | 
+| miner-list | Base | Service to provide miner authentication |
+| mysql | Base | For btcpool management data | 
+| redis | Base | For caching btcpool data | 
+| prometheus | Prometheus | Prometheus server | 
+| alertmanager | Prometheus | Send alerts from prometheus | 
+| grafana | Prometheus | Visualize metrics from pool | 
+| caddy | Prometheus | Reverse proxy for prometheus and grafana | 
+| kafka-exporter | Exporters | Kafka exporter | 
+| nodeexporter | Exporters | Node data exporter | 
+| cadvisor | Exporters | Container data exporter | 
 
 ### Environment Variables
 
@@ -177,3 +168,12 @@ Environment variables can be set or populated in the .env file.
 | TAG_BTCPOOL | 2019.09.26-17-support-ckb-mining_bch-0.18.5 | The docker tag to use for btcpool. |
 | DOCKER_IMAGE_CKB_NODE | nervos/ckb | The image for ckb | 
 | TAG_CKB_NODE | v0.38.1 | The image tag for ckb | 
+
+### Related Repositories 
+
+| Repo | Description | 
+| :--- | :--- |
+| [ansible-role-btcpool](https://github.com/insight-stratum/ansible-role-btcpool) | Ansible role that wraps this repository | 
+| [terraform-btcpool-aws-node](https://github.com/insight-stratum/terraform-btcpool-aws-node) | Terraform module that sets up node on AWS with Ansible role |
+| [terraform-btcpool-alibaba-node](https://github.com/insight-stratum/terraform-btcpool-alibaba-node) | Terraform module that sets up node on Alibaba with Ansible role |
+| [btcpool](https://github.com/btccom/btcpool) | Main btcpool repo |
