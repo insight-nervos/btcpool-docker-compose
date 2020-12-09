@@ -1,0 +1,14 @@
+version: "3.3"
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+networks:
+  monitor-net:
+    driver: bridge
+
+services:
+  ckb-miner:
+    build: ./ckb-miner
+    command: ./main --url btcpool:1800 --username alice --password X
