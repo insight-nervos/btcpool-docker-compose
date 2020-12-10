@@ -9,7 +9,7 @@ ENV GO111MODULE=on \
 # GO BUILD PREP
 WORKDIR /build
 
-RUN git clone https://github.com/leifjacky/ckb-gominer-demo /build
+RUN git clone https://github.com/insight-nervos/ckb-gominer-demo.git /build
 RUN go mod init build && go mod tidy
 
 # DO GO BUILD

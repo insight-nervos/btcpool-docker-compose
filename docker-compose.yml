@@ -29,21 +29,6 @@ services:
     networks:
       - default
 
-  btcpool-stats:
-    image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
-    ports:
-      - "8080:8080"
-    depends_on:
-      - zookeeper
-      - kafka
-      - miner-list
-    volumes:
-      - "./btcpool/config:/work/config"
-    restart: always
-    command: ["statshttpd", "-c", "/work/config/statshttpd.cfg"]
-    networks:
-      - default
-
   ckb-node:
     image: ${DOCKER_IMAGE_CKB_NODE}:${TAG_CKB_NODE}
     ports: 
