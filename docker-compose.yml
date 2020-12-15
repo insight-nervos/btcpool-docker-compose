@@ -67,8 +67,6 @@ services:
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
       - default
-    logging:
-      driver: none
 
   kafka:
     image: confluentinc/cp-kafka:5.5.1
@@ -87,8 +85,6 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - default
-    logging:
-      driver: none
 
   miner-list:
     build: ./miner-list
@@ -112,8 +108,6 @@ services:
       - ./mysql/sql:/docker-entrypoint-initdb.d
       - ./mysql/log:/var/log/mysql
     restart: always
-    logging:
-      driver: none
 
   # only run redis if enabled in btcpool
   redis:
@@ -124,8 +118,6 @@ services:
       - ./redis/data/db:/data/db
     networks:
       - default
-    logging:
-      driver: none
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.5.1
