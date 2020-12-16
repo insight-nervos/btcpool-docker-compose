@@ -12,7 +12,8 @@ services:
     volumes:
       - "./btcpool/config:/work/config"
     restart: always
-    command: ["sserver", "-c", "/work/config/sserver.cfg"]
+    command: /bin/bash -c "sleep 10; sserver -c /work/config/sserver.cfg"
+#    command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
 
@@ -41,6 +42,7 @@ services:
     volumes:
       - "./ckb-node:/var/lib/ckb"
     command: ["run"]
+    restart: always
 
   nodebridge:
     build: ./nodebridge
@@ -59,6 +61,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.1
+    restart: always
     ports:
       - "127.0.0.1:2181:2181"
     environment:
@@ -85,6 +88,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - default
+    restart: always
 
   miner-list:
     build: ./miner-list
@@ -118,6 +122,7 @@ services:
       - ./redis/data/db:/data/db
     networks:
       - default
+    restart: always
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.5.1
@@ -139,3 +144,4 @@ services:
       PORT: 9021
     networks:
       - default
+    restart: always
