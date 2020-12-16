@@ -137,6 +137,19 @@ The following containers are run with this application.
 | nodeexporter | Exporters | Node data exporter | 
 | cadvisor | Exporters | Container data exporter | 
 
+### Ports
+| Port | Description | External |
+| :--- | :---------- | :------- |
+| 1800 | Stratum Server | Yes   |
+| 8114 | CKB Node RPC   | Yes   |
+| 8115 | CKB Node Blockchain | Yes |
+| 2181 | Zookeeper Client | No  |
+| 9092 | Kafka Advertised | No  |
+| 19092 | Kafka Internal  | No  |
+| 8000 | Miner List       | No  |
+| 3306 | Mariadb          | No  |
+| 6379 | Redis            | No  |
+
 ### Environment Variables
 
 Environment variables can be set or populated in the .env file. 
