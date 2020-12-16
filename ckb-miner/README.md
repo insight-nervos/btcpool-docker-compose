@@ -7,3 +7,7 @@ Container to run local cpu miner.
 docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml up -d 
 ```
 
+Solutions 
+
+- Build stratum new stratum miner by modifying go-miner 
+

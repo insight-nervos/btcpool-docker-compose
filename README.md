@@ -82,34 +82,13 @@ CkbRawGw topic. This replaces blkmaker and gwmaker required by btcpool for other
 
 ##### Local Miner 
 
-> Note: This is not quite working as it is related to [#471](https://github.com/btccom/btcpool/issues/471) with the
-> miner not able to communicate with the pool properly. 
+> WIP - Building stratum test miner per []
 
 For testing purposes, we have included a local cpu miner that joins the pool with the default credentials (username
 =`alice`).  To run this container:
 
 ```shell script
 docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml up -d
-```
-
-The miner will wait 20 seconds to start to allow for the pool to initialize. 
-
-```shell script
-docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml logs ckb-miner 
-# These logs show the miner authing to the pool but don't receive a job 
-docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml logs btcpool 
-# On the pool side, we see the errors shown below.
-```
-
-```shell script
-btcpool_1         | I1209 00:55:36.412292     1 StratumSession.cc:248] authorize success, userId: 1, wokerHashId: 8113131267054106046, workerName: alice.__default__, password: X, clientAgent: ckbminer-v1.0.0, clientIp: 172.22.0.10, chain: default
-btcpool_1         | W1209 00:55:36.412325     1 StratumServer.cc:185] getLatestStratumJobEx fail
-btcpool_1         | E1209 00:55:36.412328     1 StratumSessionCkb.cc:62] sendMiningNotify failed, state = 3
-```
-
-To bring down the containers 
-```shell script
-docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml stop
 ```
 
 ### Prometheus 
