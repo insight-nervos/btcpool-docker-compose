@@ -16,8 +16,12 @@ stop:
 ps:
 	./scripts/compose.sh ps
 
-test:								## Run tests
-	go test ./test -v -timeout 45m
+test:
+	python -m pytest tests
 
-test-init:							## Initialize the repo for tests
-	go mod init test && go mod tidy
+
+#test:								## Run tests
+#	go test ./test -v -timeout 45m
+#
+#test-init:							## Initialize the repo for tests
+#	go mod init test && go mod tidy

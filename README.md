@@ -57,8 +57,7 @@ For more information, consult the docs [here](https://github.com/nervosnetwork/c
 
 ### Pool Wallet
 
-BTCpool requires users to import pool's wallet address. The wallet address can be off an online wallet or a ledger
- (preferred).  To import your wallet edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
+BTCpool requires users to import pool's wallet address. The wallet address can be off an online wallet or a ledger (preferred).  To import your wallet edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
   change the `[args]` parameter to your pool's wallet address.
 ```
 [block_assembler]
@@ -114,9 +113,6 @@ docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml st
 
 ### Prometheus 
 
-> Note: Grafana dashboards waiting for miner metrics before being finalization per 
->[#471](https://github.com/btccom/btcpool/issues/471) mentioned above. 
-
 A full prometheus stack can be deployed alongside the pool including Grafana, Alertmanager, and the following
  exporters. 
 
@@ -128,9 +124,11 @@ A full prometheus stack can be deployed alongside the pool including Grafana, Al
 | nodeexporter | 9100 |  | 
 | cadvisor | 9080 |  | 
 
+To verify prometheus is working, visit `pool-ip:9090/targets` to verify all the exporters came up properly. 
+
 ##### Grafana
 
-TODO
+
 
 ##### Alertmanager 
 
@@ -157,6 +155,15 @@ The following containers are run with this application.
 | kafka-exporter | Exporters | Kafka exporter | 
 | nodeexporter | Exporters | Node data exporter | 
 | cadvisor | Exporters | Container data exporter | 
+
+### Ports 
+
+TODO: Pranav 
+
+| Ports | Description | 
+| :--- | :--- | 
+| 2181 | Zookeeper | 
+
 
 ### Environment Variables
 
