@@ -1,0 +1,4 @@
+pytest
+pytest-docker-compose
+kafka-python
+confluent-kafka
