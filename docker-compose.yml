@@ -19,13 +19,21 @@ services:
   jobmaker:
     image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
     depends_on:
-      - zookeeper
       - kafka
-      - miner-list
     volumes:
       - "./btcpool/config:/work/config"
     restart: always
     command: ["jobmaker", "-c", "/work/config/jobmaker.cfg"]
+    networks:
+      - default
+
+  simulator:
+    image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
+    depends_on:
+      - btcpool
+    volumes:
+      - "./btcpool/config:/work/config"
+    command: ["simulator", "-c", "/work/config/simulator.cfg"]
     networks:
       - default
 
