@@ -74,7 +74,7 @@ bootnode_mode = false
 #
 # Allowing arbitrary machines to access the JSON-RPC port is dangerous and strongly discouraged.
 # Please strictly limit the access to only trusted machines.
-listen_address = "127.0.0.1:8114"
+listen_address = "0.0.0.0:8114"
 
 # Default is 10MiB = 10 * 1024 * 1024
 max_request_body_size = 10485760
@@ -159,7 +159,6 @@ args = "0x8d627decece439977a3a0a97815b63debaff2874"   # test addr
 hash_type = "type"
 message = "0x"
 
-
 # All metrics derived from https://github.com/nervosnetwork/ckb/pull/2199
 # See https://github.com/nervosnetwork/ckb/blob/develop/util/metrics-config/src/lib.rs#L13
 [metrics]
@@ -179,3 +178,4 @@ format = { type = "yaml" }
 [metrics.exporter.log_json]
 target = { type = "log", level = "error", interval = 900 }
 format = { type = "json" }
+
