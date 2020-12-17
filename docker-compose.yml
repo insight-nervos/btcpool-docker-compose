@@ -10,7 +10,7 @@ services:
       - kafka
       - miner-list
     volumes:
-      - "./btcpool/config:/work/config"
+      - "./btcpool/mainnet/config:/work/config"
     restart: always
     command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
@@ -23,7 +23,7 @@ services:
       - kafka
       - miner-list
     volumes:
-      - "./btcpool/config:/work/config"
+      - "./btcpool/mainnet/config:/work/config"
     restart: always
     command: ["jobmaker", "-c", "/work/config/jobmaker.cfg"]
     networks:
@@ -39,7 +39,7 @@ services:
     environment:
       CKB_CHAIN: "mainnet"
     volumes:
-      - "./ckb-node:/var/lib/ckb"
+      - "./ckb-node/mainnet:/var/lib/ckb"
     command: ["run"]
 
   nodebridge:
