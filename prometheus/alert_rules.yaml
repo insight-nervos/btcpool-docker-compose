@@ -1,7 +1,6 @@
 groups:
   - name: targets
     rules:
-      
       - alert: monitor_service_down
         expr: up == 0
         for: 30s

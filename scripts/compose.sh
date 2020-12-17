@@ -9,11 +9,16 @@ elif [ "${ACTION}" = "ps" ]; then
   DOCKER_CMD="ps"
 fi
 
+if [ "${NETWORK_NAME}" = "testnet" ]; then
+  DOCKER_NETWORK="-f docker-compose.testnet.yml"
+fi
+
 if [ "${STACK}" = "prometheus" ]; then
   docker-compose \
     -f docker-compose.yml \
     -f docker-compose.prometheus-exporters.yml \
     -f docker-compose.prometheus-server.yml \
+
     $DOCKER_CMD
 elif [ "${STACK}" = "testnet" ]; then
   docker-compose \

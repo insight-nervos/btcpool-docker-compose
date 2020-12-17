@@ -2,9 +2,7 @@
 
 btcpool/build
 
-ckb-node/data
-#!ckb-node/.gitkeep
-#!ckb-node/ckb.toml
+ckb-node/*/data
 
 mysql/*
 !mysql/sql/*
