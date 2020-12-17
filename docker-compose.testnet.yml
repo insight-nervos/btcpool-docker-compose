@@ -1,0 +1,20 @@
+version: "3.3"
+
+services:
+  btcpool:
+    volumes:
+      - "./btcpool/testnet/config:/work/config"
+
+  jobmaker:
+    volumes:
+      - "./btcpool/testnet/config:/work/config"
+
+  blockmaker:
+    volumes:
+      - "./btcpool/testnet/config:/work/config"
+
+  ckb-node:
+    environment:
+      CKB_CHAIN: "testnet"
+    volumes:
+      - "./ckb-node/testnet:/var/lib/ckb"

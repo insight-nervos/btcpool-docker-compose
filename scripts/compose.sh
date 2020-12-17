@@ -15,6 +15,11 @@ if [ "${STACK}" = "prometheus" ]; then
     -f docker-compose.prometheus-exporters.yml \
     -f docker-compose.prometheus-server.yml \
     $DOCKER_CMD
+elif [ "${STACK}" = "testnet" ]; then
+  docker-compose \
+    -f docker-compose.yml \
+    -f docker-compose.override.testnet.yml \
+    $DOCKER_CMD
 elif [ "${STACK}" = "exporters" ]; then
   docker-compose \
     -f docker-compose.yml \

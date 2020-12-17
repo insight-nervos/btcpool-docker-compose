@@ -10,7 +10,7 @@ services:
       - kafka
       - miner-list
     volumes:
-      - "./btcpool/config:/work/config"
+      - "./btcpool/mainnet/config:/work/config"
     restart: always
     command: /bin/bash -c "sleep 10; sserver -c /work/config/sserver.cfg"
 #    command: ["sserver", "-c", "/work/config/sserver.cfg"]
@@ -22,7 +22,7 @@ services:
     depends_on:
       - kafka
     volumes:
-      - "./btcpool/config:/work/config"
+      - "./btcpool/mainnet/config:/work/config"
     restart: always
     command: ["jobmaker", "-c", "/work/config/jobmaker.cfg"]
     networks:
@@ -35,6 +35,18 @@ services:
     volumes:
       - "./btcpool/config:/work/config"
     command: ["simulator", "-c", "/work/config/simulator.cfg"]
+
+  blockmaker:
+    image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
+    depends_on:
+      - zookeeper
+      - kafka
+      - ckb-node
+      - mysql
+    volumes:
+      - "./btcpool/mainnet/config:/work/config"
+    restart: always
+    command: ["blkmaker", "-c", "/work/config/blkmaker.cfg"]
     networks:
       - default
 
@@ -48,7 +60,7 @@ services:
     environment:
       CKB_CHAIN: "mainnet"
     volumes:
-      - "./ckb-node:/var/lib/ckb"
+      - "./ckb-node/mainnet:/var/lib/ckb"
     command: ["run"]
     restart: always
 
