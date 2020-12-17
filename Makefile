@@ -4,6 +4,9 @@ SHELL := /bin/bash -euo pipefail
 help: 								## Show help.
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
 
+clean:
+	@sudo rm -rf ckb-node/data mysql/data redis/data
+
 build:
 	./scripts/build-images.sh
 
@@ -16,12 +19,7 @@ stop:
 ps:
 	./scripts/compose.sh ps
 
-test:
-	python -m pytest tests
+test: test-base
 
-
-#test:								## Run tests
-#	go test ./test -v -timeout 45m
-#
-#test-init:							## Initialize the repo for tests
-#	go mod init test && go mod tidy
+test-base:
+	@python -m pytest tests
