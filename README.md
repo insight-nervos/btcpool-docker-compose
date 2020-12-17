@@ -166,7 +166,7 @@ The following containers are run with this application.
 
 ### Application Ports
 
-| Port | Description | External |
+| Port | Description | Public |
 | :--- | :---------- | :------- |
 | 1800 | Stratum Server | Yes   |
 | 8114 | CKB Node RPC   | Yes   |
