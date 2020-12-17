@@ -77,6 +77,8 @@ You can either run on mainnet (default) or testnet.  To run on testnet, modify t
 
 The easiest way to validate that the pool is running is by checking the monitoring tools included with the stack.  Included is a grafana dashboard located at `<your node ip (localhost)>:3000` with a default username (admin) / password (admin) that you change on login. Navigate to the `ckb-pool-dashboard`.  The panels should start populating when you connect miners appropriately.  It will show the block height of the pool vs the ckb node which should be in sync for the pool to function appropriately. When jobs are submitted to the pool, you will see the jobs populate in the top middle right chart (CKB Jobs). Next to that when miners start doing work, you will see them the CKB Share Logs start increasing.  Last, when shares are solved, you will see the last chart populate on the right.  
 
+### Additional Components 
+
 ##### Local Miner 
 
 > WIP - This is crashing when left running over extended periods of time so only use this for testing purposes to verify the pool is working. 
@@ -117,7 +119,6 @@ The application can be deployed in several configurations with additional monito
 | Prometheus Server | `STACK=prometheus make start` | Deploy with prometheus, grafana, and exporters | 
 | Prometheus Exporters | `STACK=exporters make start` | Deploy with prometheus exporters. To be used with external prometheus server. | 
 | Local Miner | `STACK=miner make start` | Deploy with a single local miner for testing | 
-
 
 ### Prometheus 
 
