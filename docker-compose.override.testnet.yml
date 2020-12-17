@@ -9,6 +9,10 @@ services:
     volumes:
       - "./btcpool/testnet/config:/work/config"
 
+  blockmaker:
+    volumes:
+      - "./btcpool/testnet/config:/work/config"
+
   ckb-node:
     environment:
       CKB_CHAIN: "testnet"
