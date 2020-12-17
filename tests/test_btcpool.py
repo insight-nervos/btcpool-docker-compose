@@ -1,14 +1,14 @@
-import sys
 import pytest
+
+import sys
 import requests
 import os
-from datetime import datetime
 import time
 from kafka import KafkaConsumer
 
 pytest_plugins = ["docker_compose"]
 
-os.chdir('..')
+os.chdir(os.path.join(os.path.dirname(__file__), '..'))
 
 
 def test_ckb_get_block_template(function_scoped_container_getter):

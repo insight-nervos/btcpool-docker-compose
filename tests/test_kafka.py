@@ -3,7 +3,7 @@ import os
 from confluent_kafka import Consumer
 
 
-if __name__ == '__main__':
+def test_kafka_confluent_pkg():
     conf = {
         'bootstrap.servers': 'localhost:19092',
     }
@@ -12,4 +12,3 @@ if __name__ == '__main__':
     c.subscribe(['CkbShareLog'])
     while True:
         msg = c.poll(timeout=1.0)
-        print()
