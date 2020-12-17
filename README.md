@@ -1,8 +1,7 @@
 # btcpool-docker-compose
 
-This is a docker-compose stack to setup a Stratum V1 mining pool for Nervos Blockchain.  It sets up the required
-infrastructure along with several utilities such as prometheus for operations. It can be deployed independently or via
-ansible and / or terraform with it's associated roles. 
+This is a docker-compose stack to setup a Stratum V1 mining pool for Nervos Blockchain.  It sets up the required infrastructure along with several utilities such as prometheus for operations. It can be deployed independently or via ansible and / or terraform with it's associated roles. 
+
 
 ## Quick Start
 
@@ -22,10 +21,7 @@ STACK=prometheus make start
 
 ### Configurations 
 
-The application can be deployed in several configurations with additional monitoring utilities depending on how the
-node is being run. Each configuration involves running associated override files which are facilitated with the
-Makefile. To deploy a stack, run `make start` and `make stop` to bring down the containers. For additional
-configuration reference the table below. 
+The application can be deployed in several configurations with additional monitoring utilities depending on how the node is being run. Each configuration involves running associated override files which are facilitated with the Makefile. To deploy a stack, run `make start` and `make stop` to bring down the containers. For additional configuration reference the table below. 
 
 | Configuration | Deployment Command | Description | 
 | :---- | :-------------------------- | :---- | 
@@ -36,7 +32,7 @@ configuration reference the table below.
 
 ### Miners
 
-BTCPool requires users to name each individual mining unit. Create a JSON file with the path `./miner-list/config/miners.json` and add miner names here. Use these names to connect miners to BTCPool.
+BTCPool requires users to name each individual mining unit or proxy if running a large . Create a JSON file with the path `./miner-list/config/miners.json` and add miner names here. Use these names to connect miners to BTCPool.
 ```
 {
 # "miner_name": "unique_id",
@@ -45,7 +41,7 @@ BTCPool requires users to name each individual mining unit. Create a JSON file w
 }
 ```
 
-### Initializing CKB 
+### Initializing CKB
 
 To initialize ckb, you will need to initialize the config files for ckb. They can be modified by either, 
 
@@ -57,8 +53,7 @@ For more information, consult the docs [here](https://github.com/nervosnetwork/c
 
 ### Pool Wallet
 
-BTCpool requires users to import pool's wallet address. The wallet address can be off an online wallet or a ledger
- (preferred).  To import your wallet edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
+BTCpool requires users to import pool's wallet address. The wallet address can be off an online wallet or a ledger (preferred).  To import your wallet edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
   change the `[args]` parameter to your pool's wallet address.
 ```
 [block_assembler]
@@ -93,27 +88,25 @@ docker-compose -f docker-compose.yml -f docker-compose.override.ckb-miner.yml up
 
 ### Prometheus 
 
-> Note: Grafana dashboards waiting for miner metrics before being finalization per 
->[#471](https://github.com/btccom/btcpool/issues/471) mentioned above. 
-
-A full prometheus stack can be deployed alongside the pool including Grafana, Alertmanager, and the following
- exporters. 
+A full prometheus stack can be deployed alongside the pool including Grafana, Alertmanager, and the following exporters. 
 
 | Exporter | Port | Description | 
 | :--- | :--- | :--- | 
-| btcpool | 9101 | | 
-| ckb-node | 8100 |  | 
-| kafkaexporter | 9308 |  | 
-| nodeexporter | 9100 |  | 
-| cadvisor | 9080 |  | 
+| btcpool | 9101 | Connection metrics and indicators of steady operation | 
+| ckb-node | 8100 | Chain metrics | 
+| kafkaexporter | 9308 | Kafka metrics such as number of topics | 
+| nodeexporter | 9100 | Node metrics such as CPU/RAM | 
+| cadvisor | 9080 | Container metrics | 
+
+To verify prometheus is working, visit `pool-ip:9090/targets` to verify all the exporters came up properly. 
 
 ##### Grafana
 
-TODO
+To see metrics coming from the operation of the pool, you can visit `<your IP/localhost>:3000` to view grafana dashboards. Dashboards will initialize on node startup.  
 
 ##### Alertmanager 
 
-TODO
+To send alerts when adverse situations arise, you can configure receivers to forward alert messages to.  Alerts have two basic components, rules and receivers. To setup new rules, modify the `prometheus/alert_rules.yaml` [per examples](https://awesome-prometheus-alerts.grep.to/rules.html) and restart prometheus. To add new receivers for things like SMS messages and emails, modify the `alertmanager/config.yml` and consult [the docs](https://prometheus.io/docs/alerting/latest/configuration/#receiver) to configure these channels. For instance, to configure a slack alert, you will need to insert a webhook token as seen in [this guide](https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/).
 
 ### Containers
 
@@ -136,6 +129,15 @@ The following containers are run with this application.
 | kafka-exporter | Exporters | Kafka exporter | 
 | nodeexporter | Exporters | Node data exporter | 
 | cadvisor | Exporters | Container data exporter | 
+
+### Ports 
+
+TODO: Pranav 
+
+| Ports | Description | 
+| :--- | :--- | 
+| 2181 | Zookeeper | 
+
 
 ### Environment Variables
 
