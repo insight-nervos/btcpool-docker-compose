@@ -17,8 +17,13 @@ make stop   # Bring down the pool
 To run alternative configurations, prefix with the stack. 
 
 ```bash
+STACK=testnet make start
+
 STACK=prometheus make start 
 ```
+
+#### To check your server's health
+Check kafka's control center dashboard at port `9021`. If all containers are healthy, the `CkbRawGw` and `CkbJob` topics will recieve messeges. The `CkbShareLog` and `CkbSolvedShare` topics will recieve messeges when miners are connected and working.
 
 ### Configurations 
 
@@ -30,11 +35,12 @@ configuration reference the table below.
 | Configuration | Deployment Command | Description | 
 | :---- | :-------------------------- | :---- | 
 | Base | `make start` | Minimal deployment | 
+| Testnet Server | `STACK=testnet make start` | Deploy the base compose in ckb's testnet | 
 | Prometheus Server | `STACK=prometheus make start` | Deploy with prometheus, grafana, and exporters | 
 | Prometheus Exporters | `STACK=exporters make start` | Deploy with prometheus exporters. To be used with external prometheus server. | 
 | Local Miner | `STACK=miner make start` | Deploy with a single local miner for testing | 
 
-### Miners
+### Miner List
 
 BTCPool requires users to name each individual mining unit. Create a JSON file with the path `./miner-list/config/miners.json` and add miner names here. Use these names to connect miners to BTCPool.
 ```
@@ -45,21 +51,11 @@ BTCPool requires users to name each individual mining unit. Create a JSON file w
 }
 ```
 
-### Initializing CKB 
-
-To initialize ckb, you will need to initialize the config files for ckb. They can be modified by either, 
-
-1. Starting the stack, editing the `ckb-node/ckb.toml`, then restarting the container. 
-1. Running ```docker run -v `pwd`/ckb-node:/var/lib/ckb nervos/ckb init --chain mainnet``` before deploying the stack
- and edit the files as needed. 
-
-For more information, consult the docs [here](https://github.com/nervosnetwork/ckb/blob/develop/docs/configure.md). 
-
 ### Pool Wallet
 
 BTCpool requires users to import pool's wallet address. The wallet address can be off an online wallet or a ledger
- (preferred).  To import your wallet edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
-  change the `[args]` parameter to your pool's wallet address.
+(preferred).  To import your wallet, edit `./ckb-node/ckb.toml`, scroll to the `[block_assembler]` section, and
+change the `[args]` parameter to your pool's wallet address.
 ```
 [block_assembler]
 code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
@@ -169,3 +165,4 @@ Environment variables can be set or populated in the .env file.
 | [terraform-btcpool-aws-node](https://github.com/insight-stratum/terraform-btcpool-aws-node) | Terraform module that sets up node on AWS with Ansible role |
 | [terraform-btcpool-alibaba-node](https://github.com/insight-stratum/terraform-btcpool-alibaba-node) | Terraform module that sets up node on Alibaba with Ansible role |
 | [btcpool](https://github.com/btccom/btcpool) | Main btcpool repo |
+| [ckb-node](https://github.com/nervosnetwork/ckb) | Main CKB repo |
