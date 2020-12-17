@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  simulator:
+    image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
+    depends_on:
+      - btcpool
+    volumes:
+      - "./btcpool/config:/work/config"
+    command: ["simulator", "-c", "/work/config/simulator.cfg"]

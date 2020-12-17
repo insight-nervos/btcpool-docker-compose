@@ -1,5 +1,6 @@
 version: "3.3"
 
+
 services:
   btcpool:
     image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
@@ -10,9 +11,11 @@ services:
       - kafka
       - miner-list
     volumes:
+#      - "./btcpool/${NETWORK_NAME}/config:/work/config"
       - "./btcpool/mainnet/config:/work/config"
     restart: always
-    command: /bin/bash -c "sleep 10; sserver -c /work/config/sserver.cfg"
+    command: /bin/bash -c "sleep 10; sserver -c /work/config/mainnet/sserver.cfg"
+#    command: /bin/bash -c "sleep 10; sserver -c /work/config/${NETWORK_NAME}/sserver.cfg"
 #    command: ["sserver", "-c", "/work/config/sserver.cfg"]
     networks:
       - default
@@ -22,19 +25,11 @@ services:
     depends_on:
       - kafka
     volumes:
-      - "./btcpool/mainnet/config:/work/config"
+      - "./btcpool/${NETWORK_NAME}/config:/work/config"
     restart: always
     command: ["jobmaker", "-c", "/work/config/jobmaker.cfg"]
     networks:
       - default
-
-  simulator:
-    image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
-    depends_on:
-      - btcpool
-    volumes:
-      - "./btcpool/config:/work/config"
-    command: ["simulator", "-c", "/work/config/simulator.cfg"]
 
   blockmaker:
     image: ${DOCKER_IMAGE_BTCPOOL}:${TAG_BTCPOOL}
@@ -44,7 +39,7 @@ services:
       - ckb-node
       - mysql
     volumes:
-      - "./btcpool/mainnet/config:/work/config"
+      - "./btcpool/${NETWORK_NAME}/config:/work/config"
     restart: always
     command: ["blkmaker", "-c", "/work/config/blkmaker.cfg"]
     networks:
@@ -58,9 +53,9 @@ services:
     networks:
       - default
     environment:
-      CKB_CHAIN: "mainnet"
+      CKB_CHAIN: ${NETWORK_NAME}
     volumes:
-      - "./ckb-node/mainnet:/var/lib/ckb"
+      - "./ckb-node/${NETWORK_NAME}:/var/lib/ckb"
     command: ["run"]
     restart: always
 
@@ -144,24 +139,3 @@ services:
       - default
     restart: always
 
-  control-center:
-    image: confluentinc/cp-enterprise-control-center:5.5.1
-    hostname: control-center
-#    container_name: control-center
-    depends_on:
-      - zookeeper
-      - kafka
-    ports:
-      - "9021:9021"
-    environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:19092'
-      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-#      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
-      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
-      PORT: 9021
-    networks:
-      - default
-    restart: always
