@@ -11,12 +11,9 @@ services:
       - kafka
       - miner-list
     volumes:
-#      - "./btcpool/${NETWORK_NAME}/config:/work/config"
-      - "./btcpool/mainnet/config:/work/config"
+      - "./btcpool/${NETWORK_NAME?mainnet}/config:/work/config"
     restart: always
-    command: /bin/bash -c "sleep 10; sserver -c /work/config/mainnet/sserver.cfg"
-#    command: /bin/bash -c "sleep 10; sserver -c /work/config/${NETWORK_NAME}/sserver.cfg"
-#    command: ["sserver", "-c", "/work/config/sserver.cfg"]
+    command: /bin/bash -c "sleep 10; sserver -c /work/config/sserver.cfg"
     networks:
       - default
 
