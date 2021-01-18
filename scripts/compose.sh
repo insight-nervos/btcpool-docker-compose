@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+set -eo pipefail
 
 ACTION="$1"
 if [ "${ACTION}" = "start" ]; then
-  DOCKER_CMD="up -d"
+  DOCKER_CMD="--verbose up -d"
 elif [ "${ACTION}" = "stop" ]; then
   DOCKER_CMD="down"
 elif [ "${ACTION}" = "ps" ]; then
